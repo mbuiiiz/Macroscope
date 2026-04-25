@@ -1,0 +1,27 @@
+# MacroScope Backend — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# ── Web framework ──────────────────────────────────────────────────
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# ── Database ───────────────────────────────────────────────────────
+sqlalchemy==2.0.36
+aiosqlite==0.20.0          # async SQLite driver (dev/small deployments)
+# asyncpg==0.30.0           # uncomment for PostgreSQL in production
+
+# ── Settings / config ──────────────────────────────────────────────
+pydantic-settings==2.6.1
+
+# ── HTTP client (async) ────────────────────────────────────────────
+httpx==0.28.0
+
+# ── Anthropic SDK ──────────────────────────────────────────────────
+# Groq uses the OpenAI-compatible REST API — no extra SDK needed.
+# We call it directly via httpx (already listed above).
+
+# ── Scheduler ─────────────────────────────────────────────────────
+APScheduler==3.10.4
+
+# ── Utilities ─────────────────────────────────────────────────────
+python-dotenv==1.0.1
