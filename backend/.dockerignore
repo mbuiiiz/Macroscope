@@ -1,0 +1,32 @@
+# Files Docker should not copy into the image.
+# Mirrors .gitignore plus a few build-system-only items.
+
+# Python bytecode and venvs
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Local databases (we use RDS in production)
+*.db
+*.sqlite
+*.sqlite3
+
+# Local environment overrides — production secrets come from Secrets Manager
+.env
+.env.*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# OS junk
+.DS_Store
+
+# Tests / docs / CI metadata that don't belong in the runtime image
+tests/
+*.md
+.git/
+.github/
