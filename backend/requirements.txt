@@ -7,8 +7,8 @@ uvicorn[standard]==0.32.1
 
 # ── Database ───────────────────────────────────────────────────────
 sqlalchemy==2.0.36
-aiosqlite==0.20.0          # async SQLite driver (dev/small deployments)
-# asyncpg==0.30.0           # uncomment for PostgreSQL in production
+aiosqlite==0.20.0          # async SQLite driver (local dev fallback)
+asyncpg==0.30.0            # async PostgreSQL driver (production via RDS)
 
 # ── Settings / config ──────────────────────────────────────────────
 pydantic-settings==2.6.1

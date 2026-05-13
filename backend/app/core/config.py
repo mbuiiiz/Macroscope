@@ -54,7 +54,18 @@ class Settings(BaseSettings):
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # ── Database ────────────────────────────────────────────────────
+    # Two-tier config:
+    #   • Local dev: keep DATABASE_URL pointing at SQLite (default below).
+    #   • Production (ECS): the task definition sets DB_HOST, DB_PORT, DB_NAME
+    #     as static env vars, and DB_USERNAME + DB_PASSWORD from a Secrets
+    #     Manager secret. If DB_HOST is set, we compose a Postgres DSN from
+    #     the parts; otherwise we fall back to whatever DATABASE_URL says.
     DATABASE_URL: str = "sqlite+aiosqlite:///./macroscope.db"
+    DB_HOST:     str = ""
+    DB_PORT:     int = 5432
+    DB_NAME:     str = "postgres"
+    DB_USERNAME: str = ""
+    DB_PASSWORD: str = ""
 
     # ── CORS ────────────────────────────────────────────────────────
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173", "*"]
@@ -110,3 +121,12 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# If component DB env vars are present (production / ECS), build the
+# Postgres DSN from them and overwrite DATABASE_URL. Done after Settings()
+# instantiation so it picks up all values from the environment first.
+if settings.DB_HOST:
+    settings.DATABASE_URL = (
+        f"postgresql+asyncpg://{settings.DB_USERNAME}:{settings.DB_PASSWORD}"
+        f"@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+    )
